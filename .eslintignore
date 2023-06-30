@@ -1,0 +1,8 @@
+# TypeScript
+*.js
+*.d.ts
+node_modules
+
+# AWS CDK
+.cdk.staging
+cdk.out
