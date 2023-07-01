@@ -3,6 +3,7 @@ import 'source-map-support/register';
 import { App, Tags } from 'aws-cdk-lib';
 import { getBuildConfig } from '@infrastructure/config/getBuildConfig';
 import { DataStack } from '@infrastructure/data/DataStack';
+import { ApiStack } from '@infrastructure/api/ApiStack';
 
 export default execute();
 
@@ -24,6 +25,14 @@ async function execute() {
             primaryRegion: config.primaryRegion,
             regions,
             local: config.local,
+        });
+
+        new ApiStack(app, `${stackId}-api`, {
+            env: {
+                acccount: config.accountId,
+                region,
+            },
+            appName: config.appName,
         });
     });
 
