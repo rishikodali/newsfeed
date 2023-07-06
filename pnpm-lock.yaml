@@ -40,6 +40,9 @@ dependencies:
     version: 0.5.21
 
 devDependencies:
+  '@types/aws-lambda':
+    specifier: ^8.10.119
+    version: 8.10.119
   '@types/node':
     specifier: 20.1.7
     version: 20.1.7
@@ -1880,6 +1883,10 @@ packages:
 
   /@tsconfig/node16@1.0.4:
     resolution: {integrity: sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==}
+    dev: true
+
+  /@types/aws-lambda@8.10.119:
+    resolution: {integrity: sha512-Vqm22aZrCvCd6I5g1SvpW151jfqwTzEZ7XJ3yZ6xaZG31nUEOEyzzVImjRcsN8Wi/QyPxId/x8GTtgIbsy8kEw==}
     dev: true
 
   /@types/json-schema@7.0.12:

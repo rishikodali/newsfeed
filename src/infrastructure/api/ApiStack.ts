@@ -17,6 +17,13 @@ export class ApiStack extends Stack {
     constructor(scope: App, id: string, props: ApiStackProps) {
         super(scope, id, props);
 
+        const getUserLambda = new ApiLambda(this, 'get-user-lambda', {
+            appName: props.appName,
+            functionName: 'get-user',
+            file: 'GetUserLambda.ts',
+            environmentVariables: {},
+        });
+
         const postUserLambda = new ApiLambda(this, 'post-user-lambda', {
             appName: props.appName,
             functionName: 'post-user',
@@ -29,6 +36,11 @@ export class ApiStack extends Stack {
             routeMap: [
                 {
                     path: '/user/{user}',
+                    method: HttpMethod.GET,
+                    lambdaFunction: getUserLambda.lambdaFunction,
+                },
+                {
+                    path: '/user',
                     method: HttpMethod.POST,
                     lambdaFunction: postUserLambda.lambdaFunction,
                 },
