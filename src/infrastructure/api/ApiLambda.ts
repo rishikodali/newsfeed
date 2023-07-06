@@ -9,7 +9,7 @@ export interface ApiLambdaProps {
     appName: string;
     functionName: string;
     file: string;
-    environmentVariables: Record<string, string>;
+    lambdaConfig: unknown;
 }
 
 export class ApiLambda extends Construct {
@@ -28,7 +28,11 @@ export class ApiLambda extends Construct {
             memorySize: 256,
             timeout: Duration.seconds(10),
             logRetention: RetentionDays.ONE_WEEK,
-            environment: props.environmentVariables,
+            bundling: {
+                define: {
+                    'process.env.CONFIG': JSON.stringify(props.lambdaConfig),
+                },
+            },
         });
     }
 }

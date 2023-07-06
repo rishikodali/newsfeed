@@ -16,7 +16,7 @@ async function execute() {
     regions.forEach((region) => {
         const stackId = `${config.appName}-${region}`;
 
-        new DataStack(app, `${stackId}-data`, {
+        const dataStack = new DataStack(app, `${stackId}-data`, {
             env: {
                 acccount: config.accountId,
                 region,
@@ -33,6 +33,7 @@ async function execute() {
                 region,
             },
             appName: config.appName,
+            table: dataStack.table,
         });
     });
 

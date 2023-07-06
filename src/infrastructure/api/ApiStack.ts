@@ -1,7 +1,10 @@
 import { App, Stack, StackProps } from 'aws-cdk-lib';
 import { HttpApi, HttpMethod } from '@aws-cdk/aws-apigatewayv2-alpha';
+import { ITable } from 'aws-cdk-lib/aws-dynamodb';
 import { ApiGateway } from '@infrastructure/api/ApiGateway';
 import { ApiLambda } from '@infrastructure/api/ApiLambda';
+import { GetUserLambdaConfig } from '@backend/api/GetUserLambda';
+import { PostUserLambdaConfig } from '@backend/api/PostUserLambda';
 
 export interface ApiStackProps extends StackProps {
     env: {
@@ -9,6 +12,7 @@ export interface ApiStackProps extends StackProps {
         region: string;
     };
     appName: string;
+    table: ITable;
 }
 
 export class ApiStack extends Stack {
@@ -17,19 +21,27 @@ export class ApiStack extends Stack {
     constructor(scope: App, id: string, props: ApiStackProps) {
         super(scope, id, props);
 
+        const getUserLambdaConfig: GetUserLambdaConfig = {
+            tableName: this.resolve(props.table.tableName),
+        };
         const getUserLambda = new ApiLambda(this, 'get-user-lambda', {
             appName: props.appName,
             functionName: 'get-user',
             file: 'GetUserLambda.ts',
-            environmentVariables: {},
+            lambdaConfig: getUserLambdaConfig,
         });
+        props.table.grantReadData(getUserLambda.lambdaFunction);
 
+        const postUserLambdaConfig: PostUserLambdaConfig = {
+            tableName: this.resolve(props.table.tableName),
+        };
         const postUserLambda = new ApiLambda(this, 'post-user-lambda', {
             appName: props.appName,
             functionName: 'post-user',
             file: 'PostUserLambda.ts',
-            environmentVariables: {},
+            lambdaConfig: postUserLambdaConfig,
         });
+        props.table.grantReadWriteData(postUserLambda.lambdaFunction);
 
         const apiGateway = new ApiGateway(this, 'api-gateway', {
             appName: props.appName,

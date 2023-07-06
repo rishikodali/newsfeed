@@ -1,14 +1,19 @@
 import { Database } from '@backend/shared/Database';
 import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from 'aws-lambda';
 import { UserService } from '../service/user/UserService';
+import { getLambdaConfig } from '@backend/shared/LambdaConfig';
+
+export interface PostUserLambdaConfig {
+    tableName: string;
+}
 
 export class PostUserLambda {
     database: Database;
     userService: UserService;
 
     constructor() {
-        const tableName = '';
-        this.database = new Database({ tableName });
+        const config = getLambdaConfig<PostUserLambdaConfig>();
+        this.database = new Database({ tableName: config.tableName });
         this.userService = new UserService({ database: this.database });
     }
 
