@@ -4,12 +4,16 @@ import {
     APIGatewayProxyEventQueryStringParameters,
 } from 'aws-lambda';
 
+export interface ValidatorProps<T> {
+    schema: JSONSchemaType<T>;
+}
+
 export class Validator<T> {
     validate: ValidateFunction<T>;
 
-    constructor(schema: JSONSchemaType<T>) {
+    constructor(props: ValidatorProps<T>) {
         const ajv = new Ajv();
-        this.validate = ajv.compile(schema);
+        this.validate = ajv.compile(props.schema);
     }
 
     validateRequestBody(body?: string) {

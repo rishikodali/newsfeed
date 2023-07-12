@@ -26,7 +26,7 @@ export class GetUserLambda {
 
     constructor() {
         const config = getLambdaConfig<GetUserLambdaConfig>();
-        this.validator = new Validator($GetUserRequest);
+        this.validator = new Validator({ schema: $GetUserRequest });
         this.database = new Database({ tableName: config.tableName });
         this.userService = new UserService({ database: this.database });
     }
