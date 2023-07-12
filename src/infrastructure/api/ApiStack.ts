@@ -47,7 +47,7 @@ export class ApiStack extends Stack {
             appName: props.appName,
             routeMap: [
                 {
-                    path: '/user/{user}',
+                    path: '/user/{email}',
                     method: HttpMethod.GET,
                     lambdaFunction: getUserLambda.lambdaFunction,
                 },
