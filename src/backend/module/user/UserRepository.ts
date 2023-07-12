@@ -1,4 +1,4 @@
-import { CreateUserRequest, GetUserRequest, User } from '@backend/service/user/User';
+import { CreateUserRequest, GetUserRequest, UserEntity } from '@backend/module/user/UserModel';
 import { Database } from '@backend/shared/Database';
 
 export interface UserRepositoryProps {
@@ -12,8 +12,8 @@ export class UserRepository {
         this.database = props.database;
     }
 
-    async getUser(getUserRequest: GetUserRequest) {
-        return await this.database.getItem<User>({
+    async getUser(getUserRequest: GetUserRequest): Promise<UserEntity> {
+        return await this.database.getItem<UserEntity>({
             Key: {
                 pk: 'user',
                 sk: getUserRequest.email,
@@ -21,8 +21,8 @@ export class UserRepository {
         });
     }
 
-    async createUser(createUserRequest: CreateUserRequest) {
-        await this.database.putItem<User>({
+    async createUser(createUserRequest: CreateUserRequest): Promise<void> {
+        await this.database.putItem<UserEntity>({
             Item: {
                 pk: 'user',
                 sk: createUserRequest.email,

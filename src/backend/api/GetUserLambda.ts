@@ -1,10 +1,10 @@
 import { JSONSchemaType } from 'ajv';
 import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from 'aws-lambda';
+import { GetUserRequest } from '@backend/module/user/UserModel';
+import { UserService } from '@backend/module/user/UserService';
 import { Database } from '@backend/shared/Database';
 import { getLambdaConfig } from '@backend/shared/LambdaConfig';
 import { Validator } from '@backend/shared/Validator';
-import { GetUserRequest } from '@backend/service/user/User';
-import { UserService } from '@backend/service/user/UserService';
 
 export interface GetUserLambdaConfig {
     tableName: string;
@@ -34,9 +34,10 @@ export class GetUserLambda {
     async handler(event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2<void>> {
         try {
             const request = this.validator.validateParameters(event.pathParameters);
-            await this.userService.getUser(request);
+            const result = await this.userService.getUser(request);
             return {
-                statusCode: 201,
+                statusCode: 200,
+                body: JSON.stringify(result),
             };
         } catch (error) {
             error instanceof Error && console.log(error);

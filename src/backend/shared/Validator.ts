@@ -36,7 +36,7 @@ export class Validator<T> {
 
     private validateData(data: unknown): T {
         if (this.validate(data)) {
-            return data as T;
+            return data;
         } else {
             console.log(this.validate.errors);
             throw new Error();

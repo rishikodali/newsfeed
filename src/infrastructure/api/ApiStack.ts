@@ -1,10 +1,10 @@
 import { App, Stack, StackProps } from 'aws-cdk-lib';
 import { HttpApi, HttpMethod } from '@aws-cdk/aws-apigatewayv2-alpha';
 import { ITable } from 'aws-cdk-lib/aws-dynamodb';
-import { ApiGateway } from '@infrastructure/api/ApiGateway';
-import { ApiLambda } from '@infrastructure/api/ApiLambda';
 import { GetUserLambdaConfig } from '@backend/api/GetUserLambda';
 import { PostUserLambdaConfig } from '@backend/api/PostUserLambda';
+import { ApiGateway } from '@infrastructure/api/ApiGateway';
+import { ApiLambda } from '@infrastructure/api/ApiLambda';
 
 export interface ApiStackProps extends StackProps {
     env: {
@@ -47,14 +47,14 @@ export class ApiStack extends Stack {
             appName: props.appName,
             routeMap: [
                 {
-                    path: '/user/{email}',
-                    method: HttpMethod.GET,
-                    lambdaFunction: getUserLambda.lambdaFunction,
-                },
-                {
                     path: '/user',
                     method: HttpMethod.POST,
                     lambdaFunction: postUserLambda.lambdaFunction,
+                },
+                {
+                    path: '/user/{email}',
+                    method: HttpMethod.GET,
+                    lambdaFunction: getUserLambda.lambdaFunction,
                 },
             ],
         });

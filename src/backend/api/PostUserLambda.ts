@@ -1,10 +1,10 @@
 import { JSONSchemaType } from 'ajv';
 import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from 'aws-lambda';
+import { CreateUserRequest } from '@backend/module/user/UserModel';
+import { UserService } from '@backend/module/user/UserService';
 import { Database } from '@backend/shared/Database';
 import { getLambdaConfig } from '@backend/shared/LambdaConfig';
 import { Validator } from '@backend/shared/Validator';
-import { CreateUserRequest } from '@backend/service/user/User';
-import { UserService } from '@backend/service/user/UserService';
 
 export interface PostUserLambdaConfig {
     tableName: string;
