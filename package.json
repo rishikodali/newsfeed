@@ -9,6 +9,7 @@
         "compile": "tsc",
         "format": "prettier --write .",
         "lint": "eslint .",
+        "precommit": "pnpm run compile && pnpm run format && pnpm run lint",
         "cdk": "cdk"
     },
     "devDependencies": {
