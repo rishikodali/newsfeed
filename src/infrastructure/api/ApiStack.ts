@@ -5,6 +5,7 @@ import { GetUserLambdaConfig } from '@backend/api/GetUserLambda';
 import { PostUserLambdaConfig } from '@backend/api/PostUserLambda';
 import { ApiGateway } from '@infrastructure/api/ApiGateway';
 import { ApiLambda } from '@infrastructure/api/ApiLambda';
+import { DomainRecord } from '@infrastructure/api/DomainRecord';
 
 export interface ApiStackProps extends StackProps {
     env: {
@@ -12,6 +13,9 @@ export interface ApiStackProps extends StackProps {
         region: string;
     };
     appName: string;
+    stage: string;
+    domainName: string;
+    parentAwsAccount: string;
     table: ITable;
 }
 
@@ -20,6 +24,13 @@ export class ApiStack extends Stack {
 
     constructor(scope: App, id: string, props: ApiStackProps) {
         super(scope, id, props);
+
+        new DomainRecord(this, 'domain-record', {
+            appName: props.appName,
+            stage: props.stage,
+            domainName: props.domainName,
+            parentAwsAccount: props.parentAwsAccount,
+        });
 
         const getUserLambdaConfig: GetUserLambdaConfig = {
             tableName: this.resolve(props.table.tableName),

@@ -33,6 +33,9 @@ async function execute() {
                 region,
             },
             appName: config.appName,
+            stage: config.stage,
+            domainName: config.domainName,
+            parentAwsAccount: config.secrets.parentAwsAccount,
             table: dataStack.table,
         });
     });

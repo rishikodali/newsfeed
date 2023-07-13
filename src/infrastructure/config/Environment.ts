@@ -16,6 +16,9 @@ export const buildOptions: BuildOptions = {
             [AwsRegion.US_EAST_1]: {},
             [AwsRegion.US_WEST_1]: {},
         },
-        secrets: {},
+        secrets: {
+            parentAwsAccount: process.env['PARENT_AWS_ACCOUNT']!,
+        },
+        domainName: process.env['DEVELOPMENT_DOMAIN_NAME']!,
     },
 };

@@ -17,8 +17,11 @@ export interface GlobalConfig {
         [region: string]: RegionalConfig;
     };
     secrets: SecretConfig;
+    domainName: string;
 }
 
 interface RegionalConfig {}
 
-interface SecretConfig {}
+interface SecretConfig {
+    parentAwsAccount: string;
+}
