@@ -6,7 +6,9 @@ import {
     IHostedZone,
     PublicHostedZone,
 } from 'aws-cdk-lib/aws-route53';
+import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 import { Construct } from 'constructs';
+import { SsmParameterReader } from '@infrastructure/shared/SSMParmaterReader';
 
 export interface ZoneRecordProps {
     appName: string;
@@ -43,15 +45,25 @@ export class ZoneRecord extends Construct {
                 'zone-delegation-role',
                 zoneDelegationRoleArn,
             );
-
             new CrossAccountZoneDelegationRecord(this, 'zone-delegation-record', {
                 delegatedZone: this.hostedZone,
                 parentHostedZoneName: props.parentDomainName,
                 delegationRole: zoneDelegationRole,
             });
+
+            new StringParameter(this, 'hosted-zone-id', {
+                parameterName: domainName,
+                stringValue: this.hostedZone.hostedZoneId,
+            });
         } else {
-            this.hostedZone = PublicHostedZone.fromLookup(this, 'hosted-zone', {
-                domainName,
+            const hostedZoneIdReader = new SsmParameterReader(this, 'hosted-zone-id-reader', {
+                parameterName: domainName,
+                region: props.primaryRegion,
+            });
+            const hostedZoneId = hostedZoneIdReader.getParameterValue();
+            this.hostedZone = PublicHostedZone.fromHostedZoneAttributes(this, 'hosted-zone', {
+                hostedZoneId,
+                zoneName: domainName,
             });
         }
 
