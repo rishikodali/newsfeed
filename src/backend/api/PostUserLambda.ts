@@ -1,5 +1,5 @@
 import { JSONSchemaType } from 'ajv';
-import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from 'aws-lambda';
+import { APIGatewayProxyEventV2, APIGatewayProxyStructuredResultV2 } from 'aws-lambda';
 import { CreateUserRequest } from '@backend/module/user/UserModel';
 import { UserService } from '@backend/module/user/UserService';
 import { Database } from '@backend/shared/Database';
@@ -31,7 +31,7 @@ export class PostUserLambda {
         this.userService = new UserService({ database: this.database });
     }
 
-    async handler(event: APIGatewayProxyEventV2): Promise<APIGatewayProxyResultV2<void>> {
+    async handler(event: APIGatewayProxyEventV2): Promise<APIGatewayProxyStructuredResultV2> {
         try {
             const request = this.validator.validateRequestBody(event.body);
             await this.userService.createUser(request);
@@ -40,6 +40,7 @@ export class PostUserLambda {
             };
         } catch (error) {
             error instanceof Error && console.log(error);
+            throw new Error();
         }
     }
 }

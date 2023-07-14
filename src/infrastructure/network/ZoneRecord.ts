@@ -8,7 +8,7 @@ import {
 } from 'aws-cdk-lib/aws-route53';
 import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 import { Construct } from 'constructs';
-import { SsmParameterReader } from '@infrastructure/shared/SSMParmaterReader';
+import { SsmParameterReader } from '@infrastructure/shared/SsmParmaterReader';
 
 export interface ZoneRecordProps {
     appName: string;

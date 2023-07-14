@@ -6,6 +6,7 @@ node_modules
 # AWS CDK
 .cdk.staging
 cdk.out
+cdk.context.json
 
 # Environment
 .env

@@ -1,10 +1,11 @@
 import { App, Stack, StackProps } from 'aws-cdk-lib';
-import { HttpApi, HttpMethod } from '@aws-cdk/aws-apigatewayv2-alpha';
+import { ApiMapping, HttpApi, HttpMethod } from '@aws-cdk/aws-apigatewayv2-alpha';
 import { ITable } from 'aws-cdk-lib/aws-dynamodb';
 import { GetUserLambdaConfig } from '@backend/api/GetUserLambda';
 import { PostUserLambdaConfig } from '@backend/api/PostUserLambda';
 import { ApiGateway } from '@infrastructure/api/ApiGateway';
 import { ApiLambda } from '@infrastructure/api/ApiLambda';
+import { DomainRecord } from '@infrastructure/network/DomainRecord';
 
 export interface ApiStackProps extends StackProps {
     env: {
@@ -13,6 +14,7 @@ export interface ApiStackProps extends StackProps {
     };
     appName: string;
     table: ITable;
+    domainRecord: DomainRecord;
 }
 
 export class ApiStack extends Stack {
@@ -59,5 +61,15 @@ export class ApiStack extends Stack {
             ],
         });
         this.api = apiGateway.api;
+
+        new ApiMapping(this, 'regional-api-mapping', {
+            api: this.api,
+            domainName: props.domainRecord.regionalDomain,
+        });
+
+        new ApiMapping(this, 'global-api-mapping', {
+            api: this.api,
+            domainName: props.domainRecord.globalDomain,
+        });
     }
 }

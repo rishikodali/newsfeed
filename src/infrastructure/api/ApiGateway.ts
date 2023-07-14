@@ -21,6 +21,7 @@ export class ApiGateway extends Construct {
         this.api = new HttpApi(this, 'http-api', {
             apiName: props.appName,
             createDefaultStage: true,
+            disableExecuteApiEndpoint: true,
         });
 
         props.routeMap.forEach((route) => {

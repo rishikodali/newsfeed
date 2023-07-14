@@ -28,7 +28,7 @@ async function execute() {
             local: config.local,
         });
 
-        new NetworkStack(app, `${stackId}-network`, {
+        const networkStack = new NetworkStack(app, `${stackId}-network`, {
             env: {
                 account: config.accountId,
                 region,
@@ -47,6 +47,7 @@ async function execute() {
             },
             appName: config.appName,
             table: dataStack.table,
+            domainRecord: networkStack.domainRecord,
         });
     });
 
