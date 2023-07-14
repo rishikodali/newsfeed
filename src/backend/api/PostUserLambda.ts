@@ -33,6 +33,7 @@ export class PostUserLambda {
 
     async handler(event: APIGatewayProxyEventV2): Promise<APIGatewayProxyStructuredResultV2> {
         try {
+            console.log(event);
             const request = this.validator.validateRequestBody(event.body);
             await this.userService.createUser(request);
             return {

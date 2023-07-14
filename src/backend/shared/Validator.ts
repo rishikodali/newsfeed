@@ -17,7 +17,10 @@ export class Validator<T> {
     }
 
     validateRequestBody(body?: string) {
-        return this.validateData(body);
+        if (!body) {
+            throw new Error();
+        }
+        return this.validateData(JSON.parse(body));
     }
 
     validateParameters(

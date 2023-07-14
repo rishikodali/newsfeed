@@ -1,7 +1,7 @@
 {
     "app": "npx ts-node --prefer-ts-exts -r tsconfig-paths/register -r dotenv/config src/infrastructure/Application.ts",
     "watch": {
-        "include": ["infrastructure"]
+        "include": ["src"]
     },
     "context": {
         "@aws-cdk/aws-lambda:recognizeLayerVersion": true,

@@ -33,6 +33,7 @@ export class GetUserLambda {
 
     async handler(event: APIGatewayProxyEventV2): Promise<APIGatewayProxyStructuredResultV2> {
         try {
+            console.log(event);
             const request = this.validator.validateParameters(event.pathParameters);
             const result = await this.userService.getUser(request);
             return {
