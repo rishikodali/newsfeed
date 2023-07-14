@@ -57,6 +57,7 @@ export class ZoneRecord extends Construct {
 
         this.certificate = new Certificate(this, 'certificate', {
             domainName: this.hostedZone.zoneName,
+            subjectAlternativeNames: [`*.${this.hostedZone.zoneName}`],
             validation: CertificateValidation.fromDns(this.hostedZone),
         });
     }
