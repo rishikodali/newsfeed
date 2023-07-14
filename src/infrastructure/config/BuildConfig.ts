@@ -13,11 +13,11 @@ export interface GlobalConfig {
     stage: string;
     accountId: string;
     primaryRegion: string;
+    parentDomainName: string;
+    secrets: SecretConfig;
     regions: {
         [region: string]: RegionalConfig;
     };
-    secrets: SecretConfig;
-    domainName: string;
 }
 
 interface RegionalConfig {}

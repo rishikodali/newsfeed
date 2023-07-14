@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
 import { App, Tags } from 'aws-cdk-lib';
+import { ApiStack } from '@infrastructure/api/ApiStack';
 import { getBuildConfig } from '@infrastructure/config/getBuildConfig';
 import { DataStack } from '@infrastructure/data/DataStack';
-import { ApiStack } from '@infrastructure/api/ApiStack';
+import { NetworkStack } from '@infrastructure/network/NetworkStack';
 
 export default execute();
 
@@ -27,15 +28,24 @@ async function execute() {
             local: config.local,
         });
 
-        new ApiStack(app, `${stackId}-api`, {
+        new NetworkStack(app, `${stackId}-network`, {
             env: {
-                acccount: config.accountId,
+                account: config.accountId,
                 region,
             },
             appName: config.appName,
             stage: config.stage,
-            domainName: config.domainName,
+            primaryRegion: config.primaryRegion,
+            parentDomainName: config.parentDomainName,
             parentAwsAccount: config.secrets.parentAwsAccount,
+        });
+
+        new ApiStack(app, `${stackId}-api`, {
+            env: {
+                account: config.accountId,
+                region,
+            },
+            appName: config.appName,
             table: dataStack.table,
         });
     });

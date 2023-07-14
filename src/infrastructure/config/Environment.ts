@@ -12,13 +12,13 @@ export const buildOptions: BuildOptions = {
         stage: Stage.DEVELOPMENT,
         accountId: AwsAccountId.DEVELOPMENT,
         primaryRegion: AwsRegion.US_EAST_1,
+        parentDomainName: process.env['DEVELOPMENT_DOMAIN_NAME']!,
+        secrets: {
+            parentAwsAccount: process.env['PARENT_AWS_ACCOUNT']!,
+        },
         regions: {
             [AwsRegion.US_EAST_1]: {},
             [AwsRegion.US_WEST_1]: {},
         },
-        secrets: {
-            parentAwsAccount: process.env['PARENT_AWS_ACCOUNT']!,
-        },
-        domainName: process.env['DEVELOPMENT_DOMAIN_NAME']!,
     },
 };
