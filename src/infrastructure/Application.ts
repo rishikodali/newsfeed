@@ -5,6 +5,7 @@ import { ApiStack } from '@infrastructure/api/ApiStack';
 import { getBuildConfig } from '@infrastructure/config/getBuildConfig';
 import { DataStack } from '@infrastructure/data/DataStack';
 import { NetworkStack } from '@infrastructure/network/NetworkStack';
+import { ProcessorStack } from '@infrastructure/processor/ProcessorStack';
 
 export default execute();
 
@@ -48,6 +49,16 @@ async function execute() {
             appName: config.appName,
             table: dataStack.table,
             domainRecord: networkStack.domainRecord,
+        });
+
+        new ProcessorStack(app, `${stackId}-processor`, {
+            env: {
+                account: config.accountId,
+                region,
+            },
+            appName: config.appName,
+            table: dataStack.table,
+            bucket: dataStack.bucket,
         });
     });
 
