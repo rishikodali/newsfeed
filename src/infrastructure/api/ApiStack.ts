@@ -1,8 +1,8 @@
 import { App, Stack, StackProps } from 'aws-cdk-lib';
 import { ApiMapping, HttpApi, HttpMethod } from '@aws-cdk/aws-apigatewayv2-alpha';
 import { ITable } from 'aws-cdk-lib/aws-dynamodb';
-import { GetUserLambdaConfig } from '@backend/api/GetUserLambda';
-import { PostUserLambdaConfig } from '@backend/api/PostUserLambda';
+import { GetUserLambdaConfig } from '@backend/api/GetUserApi';
+import { PostUserLambdaConfig } from '@backend/api/PostUserApi';
 import { ApiGateway } from '@infrastructure/api/ApiGateway';
 import { ApiLambda } from '@infrastructure/api/ApiLambda';
 import { DomainRecord } from '@infrastructure/network/DomainRecord';
@@ -29,7 +29,7 @@ export class ApiStack extends Stack {
         const getUserLambda = new ApiLambda(this, 'get-user-lambda', {
             appName: props.appName,
             functionName: 'get-user',
-            file: 'GetUserLambda.ts',
+            file: 'GetUserApi.ts',
             lambdaConfig: getUserLambdaConfig,
         });
         props.table.grantReadData(getUserLambda.lambdaFunction);
@@ -40,7 +40,7 @@ export class ApiStack extends Stack {
         const postUserLambda = new ApiLambda(this, 'post-user-lambda', {
             appName: props.appName,
             functionName: 'post-user',
-            file: 'PostUserLambda.ts',
+            file: 'PostUserApi.ts',
             lambdaConfig: postUserLambdaConfig,
         });
         props.table.grantReadWriteData(postUserLambda.lambdaFunction);
